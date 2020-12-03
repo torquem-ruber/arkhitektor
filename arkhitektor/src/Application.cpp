@@ -1,36 +1,79 @@
 #include <iostream>
-#include "OS/Interface.h";
-#include "Menu.h"
-#include "Application.h";
+#include <string>
+
+#include "Application.h"
+#include "Menu/Menu.h"
+#include "Menu/Formatter.h"
+#include "OS/Interface.h"
 
 int main()
 {
+    startMenu->AddItem("1 - Generate Plans", "1", planMenu);
+    startMenu->AddItem("2 - Administer Databases", "2", nullptr);
+    startMenu->AddItem("3 - Settings", "3", nullptr);
+    startMenu->AddItem("", "0", nullptr);
+    startMenu->AddItem("Q - Quit", "Q", quitMenu);
+
+    planMenu->AddItem("1 - Option A", "1", nullptr);
+    planMenu->AddItem("2 - Option B", "2", nullptr);
+    planMenu->AddItem("3 - Option C", "3", nullptr);
+    planMenu->AddItem("4 - Option D", "4", nullptr);
+    planMenu->AddItem("", "0", nullptr);
+    planMenu->AddItem("Q - Back", "Q", startMenu);
+
+    Application::EnterMenu(startMenu);
+
+    return 0;
+}
+
+void Application::EnterMenu(Ark::Menu* menu)
+{
+    bool animate = menu->m_Animate;
+
     while (true)
     {
-        TitleMenuAnimation();
+        if (menu->m_Event != nullptr)
+            menu->m_Event();
 
-        std::string input;
+        int height;
+        Ark::GetTerminalSize(nullptr, &height);
+        for (int i = 0; i < height; i++)
+            std::cout << "\n";
+
+        const char* title = menu->m_Title;
+        int lines = Ark::GetLineCount(title);
+        std::cout << title << "\n\n";
+
+        size_t size = 0;
+        const char** labels = menu->GetItemLabels(size);
+
+        for (size_t i = 0; i < size; i++)
+            std::cout << "\t" << labels[i] << "\n";
+
+        for (int i = 0; i < (height - size - lines - 2); i++)
+        {
+            if(animate) SLEEP(10);
+            std::cout << "\n";
+        }
+        std::cout << "> ";
+
+        char* input = new char();
         std::cin >> input;
 
-        try
+        Ark::Menu* target = menu->CheckInput(input);
+        if (target == nullptr)
         {
-            int inputValue = std::stoi(input);
-            switch (inputValue)
-            {
-            case 1: GeneratePlansMenu();  break;
-            case 2: AdministerDatabasesMenu();  break;
-            case 3: Quit(); return 0;
-            default: break;
-            }
-        }
-        catch (...)
-        {
+            Application::InvalidInput(&input);
+            animate = false;
             continue;
         }
+
+        animate = target->m_Animate;
+        menu = target;
     }
 }
 
-void ClearScreen()
+void Application::ClearScreen()
 {
     int height;
     Ark::GetTerminalSize(nullptr, &height);
@@ -38,36 +81,22 @@ void ClearScreen()
         std::cout << "\n";
 }
 
-void TitleMenuAnimation()
+void Application::InvalidInput(char** input)
 {
     int height;
     Ark::GetTerminalSize(nullptr, &height);
+    for (int i = 0; i < height; i++)
+        std::cout << "\n";
 
-    for (int i = 0; i < height; i++) 
-        std::cout << "\n"; 
+    std::cout << "\t\"" << *input << "\"" << " is not a valid input...";
 
-    std::cout << banner << "\n\n";
-    std::cout << "\t" << "1 - Generate plans" << "\n";
-    std::cout << "\t" << "2 - Administer databases" << "\n";
-    std::cout << "\t" << "3 - Quit" << "\n";
+    for (int i = 0; i < height - 2; i++)
+        std::cout << "\n";
 
-    for (int i = 0; i < height - 11; i++) { 
-        SLEEP(10);
-        std::cout << "\n"; 
-    }
-
-    std::cout << "> ";;
+    SLEEP(1000);
 }
 
-void GeneratePlansMenu()
+void Application::Quit()
 {
-    ClearScreen();
-}
-void AdministerDatabasesMenu()
-{
-    ClearScreen();
-}
-void Quit()
-{
-    ClearScreen();
+    exit(0);
 }
