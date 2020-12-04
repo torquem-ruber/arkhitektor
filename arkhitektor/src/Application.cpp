@@ -8,21 +8,8 @@
 
 int main()
 {
-    startMenu->AddItem("1 - Generate Plans", "1", planMenu);
-    startMenu->AddItem("2 - Administer Databases", "2", nullptr);
-    startMenu->AddItem("3 - Settings", "3", nullptr);
-    startMenu->AddItem("", "0", nullptr);
-    startMenu->AddItem("Q - Quit", "Q", quitMenu);
-
-    planMenu->AddItem("1 - Option A", "1", nullptr);
-    planMenu->AddItem("2 - Option B", "2", nullptr);
-    planMenu->AddItem("3 - Option C", "3", nullptr);
-    planMenu->AddItem("4 - Option D", "4", nullptr);
-    planMenu->AddItem("", "0", nullptr);
-    planMenu->AddItem("Q - Back", "Q", startMenu);
-
+    Application::InitMenus();
     Application::EnterMenu(startMenu);
-
     return 0;
 }
 
@@ -99,4 +86,20 @@ void Application::InvalidInput(char** input)
 void Application::Quit()
 {
     exit(0);
+}
+
+void Application::InitMenus()
+{
+    startMenu->AddItem("1 - Generate Plans", "1", planMenu);
+    startMenu->AddItem("2 - Administer Databases", "2", nullptr);
+    startMenu->AddItem("3 - Settings", "3", nullptr);
+    startMenu->AddItem("", "0", nullptr);
+    startMenu->AddItem("q - Quit", "q", quitMenu);
+
+    planMenu->AddItem("1 - Option A", "1", nullptr);
+    planMenu->AddItem("2 - Option B", "2", nullptr);
+    planMenu->AddItem("3 - Option C", "3", nullptr);
+    planMenu->AddItem("4 - Option D", "4", nullptr);
+    planMenu->AddItem("", "0", nullptr);
+    planMenu->AddItem("q - Back", "q", startMenu);
 }

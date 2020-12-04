@@ -15,6 +15,7 @@ Ark::Menu* settingsMenu = new Ark::Menu("\n\tSettings", false);
 
 namespace Application
 {
+    void InitMenus();
     void EnterMenu(Ark::Menu* menu);
     void ClearScreen();
     void InvalidInput(char**);
