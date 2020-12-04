@@ -2,7 +2,7 @@
 #include <windows.h>
 
 // DEFINES
-#define SLEEP(x) Sleep(x)
+#define WAIT(x) Sleep(x)
 
 
 namespace Ark

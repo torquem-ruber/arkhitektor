@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 // DEFINES
-#define SLEEP(x) usleep(x/1000)
+#define WAIT(x) usleep(x/1000)
 
 
 namespace Ark

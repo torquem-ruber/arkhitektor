@@ -8,34 +8,37 @@ namespace Ark
         char current = text[0];
         if (current == '\0') return 0;
 
-        int w, h;
-        Ark::GetTerminalSize(&w, &h);
+        int w;
+        Ark::GetTerminalSize(&w, nullptr);
 
-        int lines = 1;
-        int index = 0;
-        int xIndex = 0;
+        int lines = 1, index = 0;
         while (current != '\0')
         {
-            if (xIndex > w-1)
-            {
-                lines++;
-                xIndex = 0;
-                index--;
-            }
-            else
-            {
-                xIndex++;
-                if (current == '\n') 
-                {
-                    lines++;
-                    xIndex = 0;
-                }
-            }
+            if ((index+1)-((lines-1)*w) > w) { lines++; }
+            else if (current == '\n')    { lines++; }
 
-            index++;
-            current = text[index];
+            current = text[index++];
         }
 
         return lines;
 	}
+
+    bool FitsConsole(const char* text)
+    {
+        int w;
+        Ark::GetTerminalSize(&w, nullptr);
+
+        int index = 0;
+        int xIndex = 0;
+        char current = text[0];
+        while (current != '\0')
+        {
+            if (xIndex > w) return false;
+            if (current == '\n') xIndex = 0;
+
+            xIndex++;
+            current = text[index++];
+        }
+        return true;
+    }
 }

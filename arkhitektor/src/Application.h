@@ -1,17 +1,17 @@
 #pragma once
 #include "Menu/Menu.h"
 
-const char* banner = R"(
-          __              ___  ___      ___  __   __  
+const char* banner = 
+R"(          __              ___  ___      ___  __   __  
      /\  |__) |__/ |__| |  |  |__  |__/  |  /  \ |__) 
     /~~\ |  \ |  \ |  | |  |  |___ |  \  |  \__/ |  \ 
 _________________________________________________________
 )";
 
 Ark::Menu* startMenu = new Ark::Menu(banner, true);
-Ark::Menu* planMenu = new Ark::Menu("\n\tAdminister Plans", false);
-Ark::Menu* databaseMenu = new Ark::Menu("\n\tAdminister Databases", false);
-Ark::Menu* settingsMenu = new Ark::Menu("\n\tSettings", false);
+Ark::Menu* planMenu = new Ark::Menu("\tAdminister Plans", false);
+Ark::Menu* databaseMenu = new Ark::Menu("\tAdminister Databases", false);
+Ark::Menu* settingsMenu = new Ark::Menu("\tSettings", false);
 
 namespace Application
 {

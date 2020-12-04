@@ -28,18 +28,20 @@ void Application::EnterMenu(Ark::Menu* menu)
             std::cout << "\n";
 
         const char* title = menu->m_Title;
-        int lines = Ark::GetLineCount(title);
-        std::cout << title << "\n\n";
+        int menuSize = Ark::GetLineCount(title);
+        std::cout << "\n" << title;
+        std::cout << "\n\n"; menuSize += 3;
 
         size_t size = 0;
         const char** labels = menu->GetItemLabels(size);
+        menuSize += size;
 
         for (size_t i = 0; i < size; i++)
             std::cout << "\t" << labels[i] << "\n";
 
-        for (int i = 0; i < (height - size - lines - 2); i++)
+        for (int i = 0; i < (height - menuSize); i++)
         {
-            if(animate) SLEEP(10);
+            if(animate) WAIT(10);
             std::cout << "\n";
         }
         std::cout << "> ";
@@ -80,7 +82,7 @@ void Application::InvalidInput(char** input)
     for (int i = 0; i < height - 2; i++)
         std::cout << "\n";
 
-    SLEEP(1000);
+    WAIT(1000);
 }
 
 void Application::Quit()
